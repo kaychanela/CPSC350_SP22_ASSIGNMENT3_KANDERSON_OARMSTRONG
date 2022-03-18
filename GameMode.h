@@ -10,6 +10,7 @@ private:
   int generationNum;
   int height; //rows
   int width; //cols
+  string boundaryType;
   char** boardArray;
   void generateRandomArray(int h, int w, float p);
   void generateFileArray();

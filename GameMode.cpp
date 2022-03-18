@@ -7,8 +7,7 @@ GameMode::GameMode() {
     }
 }
 
-void GameMode::generateRandomArray(int h, int w, float p)
-{
+void GameMode::generateRandomArray(int h, int w, float p){
   height = h;
   width = w;
 
@@ -25,7 +24,6 @@ void GameMode::generateRandomArray(int h, int w, float p)
       }
     }
   }
-
 }
 
 GameMode::~GameMode() {
