@@ -7,17 +7,17 @@ using namespace std;
 class GameMode{
 public:
   GameMode();
-  GameMode(array curr);
   ~GameMode();
 private:
+  int generationNum;
   int height;
   int width;
-  bool briefpause;
   array currgen;
   array nextgen;
   array generateArray(int h, int w, float p);
+  void printArray();
   array simulate();
-  void playGame();
+
 };
 
 #endif
