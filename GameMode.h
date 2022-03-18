@@ -5,19 +5,22 @@
 using namespace std;
 
 class GameMode{
-public:
-  GameMode();
-  ~GameMode();
+
 private:
   int generationNum;
-  int height;
-  int width;
-  array currgen;
-  array nextgen;
-  array generateArray(int h, int w, float p);
+  int height; //rows
+  int width; //cols
+  char** boardArray;
+  void generateRandomArray(int h, int w, float p);
+  void generateFileArray();
+  void simulate();
+public:
+  GameMode();
+  int getNeighborCountClassic(int row, int col);
+  int getNeighborCountDoughnut(int row, int col);
+  int getNeighborCountMirror(int row, int col);
   void printArray();
-  array simulate();
-
+  ~GameMode();
 };
 
 #endif
