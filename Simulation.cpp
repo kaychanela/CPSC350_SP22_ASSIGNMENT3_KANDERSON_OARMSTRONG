@@ -2,7 +2,7 @@
 
 Simulation::Simulation(){
   briefpause = true;
-  T gameMode;
+  GameMode g1;
 }
 ~Simulation::Simulation(){
 }
@@ -27,7 +27,7 @@ void Simulation::setConfiguration(){
     cin >> width >> endl;
     cout << "Please enter the density of the population. (Ex. 6.7)" << endl;
     cin >> density >> endl;
-    T gameMode(height,width,density);
+    g1.generateRandomArray(height,width,density);
   }
   else{
     cout << "Please enter the file name." << endl;
