@@ -72,6 +72,7 @@ int GameMode::getNeighborCountDoughnut(int row, int col){
 
   int count = 0;
 
+  //CHECK ABOVE
   //if in boundary of array for row - 1, col unchanged
   if(row - 1 >= 0) {
     //if array at new coords == 'X'
@@ -80,7 +81,7 @@ int GameMode::getNeighborCountDoughnut(int row, int col){
       count++;
     }
   }
-  //else
+  //else WRAP AROUND BOTTOM
   else{ //over border
     //array at height - 1, col unchanged == 'X'
     if(boardArray[height - 1][col] == 'X'){
@@ -88,29 +89,54 @@ int GameMode::getNeighborCountDoughnut(int row, int col){
       count++;
     }
 
+  //CHECK BELOW
+  if(row + 1 <= height) {
+    //if array at new coords == 'X'
+    if(boardArray[row + 1][col] == 'X'){
+      //then neighbor count++
+      count++;
+    }
   }
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col unchanged
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at 0, col unchanged == 'X'
+  //else WRAP AROUND TOP
+  else{ //over border
+    //array at height - 1, col unchanged == 'X'
+    if(boardArray[0][col] == 'X'){
       //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row unchanged, col - 1
+      count++;
+    }
+  }
+    //CHECK LEFT
+    if(col - 1 >= 0) {
     //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row, width - 1 == 'X'
+    if(boardArray[row][col - 1 ] == 'X'){
+      //then neighbor count++
+      count++;
+    }
+  }
+  //else WRAP AROUND TO THE RIGHT SIDE
+  else{ //over border
+    //array at height - 1, col unchanged == 'X'
+    if(boardArray[row][length - 1] == 'X'){
       //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row unchanged, col + 1
+      count++;
+    }
+    //CHECK RIGHT
+  if(col + 1 <= length) {
     //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row, 0 == 'X'
+    if(boardArray[row][col + 1] == 'X'){
+      //then neighbor count++
+      count++;
+    }
+  }
+  //else WRAP AROUND TO THE LEFT
+  else{ //over border
+    //array at height - 1, col unchanged == 'X'
+    if(boardArray[row][0] == 'X'){
       //then neighbor count ++
-  //-------------------------------------------------------------------
+      count++;
+    }
+  }
+
 
   ////////////////////// DIAGONALS ////////////////////////////////
   //if in boundary of array for row -1, col -1
