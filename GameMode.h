@@ -7,6 +7,7 @@ using namespace std;
 class GameMode{
 
 private:
+  string gameMode; //"doughnut" "classic" or "mirror"
   int generationNum;
   int height; //rows
   int width; //cols
@@ -14,6 +15,7 @@ private:
   void generateRandomArray(int h, int w, float p);
   void generateFileArray();
   void simulate();
+  void doBoardRound();
 public:
   GameMode();
   int getNeighborCountClassic(int row, int col);
