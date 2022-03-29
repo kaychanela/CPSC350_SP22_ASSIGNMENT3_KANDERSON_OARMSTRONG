@@ -1,18 +1,21 @@
-#ifndef SIMULATE_H
-#define SIMULATE_H
+#ifndef SIMULATION_H
+#define SIMULATION_H
 
-#include <iostream>
-using namespace std;
+#include "GameMode.h"
 
-template <class T> class Simulation{
+class Simulation{
 private:
-  bool briefpause;
-  T gameMode;
-  void setConfiguration();
-  void startGame();
-  void setGameMode();
+  bool briefPause;
+  string infilename;
+  string outfilename;
+  GameMode g1;
 public:
+  void setConfiguration();
+  void setBriefPause();
+  void startGame();
+  void getGameMode();
   Simulation();
   ~Simulation();
 
 };
+#endif

@@ -1,58 +1,119 @@
-#include <Simulation>
+#include "Simulation.h"
 
 Simulation::Simulation(){
-  briefpause = true;
-  GameMode g1;
+  briefPause = true;
 }
-~Simulation::Simulation(){
+Simulation::~Simulation(){
 }
 void Simulation::setConfiguration(){
   int height;
   int width;
   float density;
+  int response;
   cout << "Do you wish to wish to start with a random configuration (1), or provide a map file (2)." << endl;
-  cout << "Enter 1 or 2" << endl;
-  while(false){
-    cin >> response >> endl;
-    if(response == "1" || "2"){
+  while(true){
+    cin >> response;
+    if(response == 1 || response == 2){
       break;
     }
-    else{
-      cout << "Invalid input: Please Enter 1 for random configuration or 2 to specify a flat-file configuration" << endl;
-    }
+    cin.clear();
+    cout << "Invalid input: Please Enter 1 for random configuration or 2 to specify a flat-file configuration" << endl;
   }
-  if(response == "1"){
-    cout << "Please enter the dimensions of the world (height width). (Ex. 5 5)" << endl;
-    cin >> height >> endl;
-    cin >> width >> endl;
-    cout << "Please enter the density of the population. (Ex. 6.7)" << endl;
-    cin >> density >> endl;
+  if(response == 1){
+    cout << "Please enter the dimensions of the world (height width) each should be 1-50. (Ex. 5 5)" << endl;
+    while(true){
+      cin >> height;
+      cin >> width;
+      if(height > 0 && height < 50 && width > 0 && width < 50){
+        break;
+      }
+      cin.clear();
+      cout << "Invalid Input: At least one of your numbers was out of bounds, Please insert integer values for height and wicth. Ex (5 5)" << endl;
+    }
+    cout << "Please enter the density of the population (0-1). (Ex. 0.7)" << endl;
+    while(true){
+      cin >> density;
+      if(density <= 1 && density > 0){
+        break;
+      }
+      cin.clear();
+      cout << "Invalid Input: Please insert proper density values. (0-1) Ex (0.7)" << endl;
+    }
+      g1.setWidth(width);
+      g1.setHeight(height);
     g1.generateRandomArray(height,width,density);
   }
   else{
-    cout << "Please enter the file name." << endl;
-    cin >> filename >> endl;
-    f1.readFile(filename);
+    cout << "Please enter the txt file name. (Do not include .txt)" << endl;
+    cin >> infilename;
+    g1.generateFileArray(infilename);
   }
 }
 
-void Simulation::setGameMode(){
-  cout << "What kind of boundary mode to run in? (Classic, Doughnut, Mirror)" << endl;
-  while(false){
-    cin >> gamemode >> endl;
-    if(tolower(gamemode) == "classic" || "doughnut" || "mirror"){
+void Simulation::getGameMode(){
+  char gamemode;
+  cout << "What kind of boundary mode to run in? (C for Classic, D for Doughnut, M for Mirror)" << endl;
+  while(true){
+    cin >> gamemode;
+    if(tolower(gamemode) == 'c' || tolower(gamemode) == 'd' || tolower(gamemode) == 'm'){
       break;
     }
-    else{
-      cout << "Invalid Input: Please Enter Classic, Doughnnut or Mirror" << endl;
-    }
+    cin.clear();
+    cout << "Invalid Input: Please Enter c, d or m" << endl;
   }
-  cout <<
+  g1.setGameMode(gamemode);
+}
+void Simulation::setBriefPause(){
+  char response;
+  cout << "Do you wish to have a breif pause between generations?" << endl;
+  cout << "Else generations will be outputed into a file." << endl;
+  cout << "Type Y for yes or N for no." << endl;
+  while(true){
+    cin >> response;
+    if(tolower(response) == 'n' || tolower(response) == 'y'){
+      break;
+    }
+    cin.clear();
+    cout << "Incorrect Input: Please Enter Y for yes or N for no." << endl;
+  }
+  if(tolower(response) == 'n'){
+    briefPause = false;
+    cout << "Enter the name of your desired output file" << endl;
+    cin >> outfilename;
+  }
+  else{
+    briefPause = true;
+  }
 }
 
 void Simulation::startGame(){
-  string response = NULL;
-  FileReader f1;
-  string filename;
-
+  string response = "";
+  setConfiguration();
+  getGameMode();
+  setBriefPause();
+  if(briefPause){
+    cout << "0" << endl;
+    g1.printArray();
+  }
+  else{
+    g1.clearOutFile(outfilename);
+    g1.printArrayToFile(outfilename);
+  }
+  while(!g1.isEmpty() && !g1.isBalanced()){//print first then second, if second is equal to first end
+    if(briefPause){
+      g1.doBoardRound();
+      cout << "generation number " << to_string(g1.getGenerationNum()) << endl;
+      g1.printArray();
+      cout << "Generation " << g1.getGenerationNum() << " complete, press Enter to continue" << endl;
+      cin.clear();
+      cin.ignore();
+    }
+    else{
+      g1.doBoardRound();
+      g1.printArrayToFile(outfilename); //want to create a method that clears filename before starting, outside of for loop
+    }
+  }
+  cout << "Simulation over, press Enter to exit." << endl;
+  cin.clear();
+  cin.ignore();
 }

@@ -1,0 +1,240 @@
+generation number-1
+X---X--
+---X---
+X--X-X-
+X--X---
+----X--
+X--X--X
+X-----X
+generation number0
+-------
+---X---
+--XX---
+---X---
+---XX--
+-----X-
+-------
+generation number1
+-------
+--XX---
+--XXX--
+-------
+---XX--
+----X--
+-------
+generation number2
+-------
+--X-X--
+--X-X--
+--X----
+---XX--
+---XX--
+-------
+generation number3
+-------
+-------
+-XX----
+--X-X--
+--X-X--
+---XX--
+-------
+generation number4
+-------
+-------
+-XXX---
+--X----
+--X-XX-
+---XX--
+-------
+generation number5
+-------
+--X----
+-XXX---
+----X--
+--X-XX-
+---XXX-
+-------
+generation number6
+-------
+-XXX---
+-XXX---
+-X--XX-
+-------
+---X-X-
+----X--
+generation number7
+--X----
+-X-X---
+X------
+-X-XX--
+-----X-
+----X--
+----X--
+generation number8
+--X----
+-XX----
+XX-XX--
+----X--
+---X-X-
+----XX-
+-------
+generation number9
+-XX----
+X------
+XX-XX--
+--X--X-
+---X-X-
+----XX-
+-------
+generation number10
+-X-----
+X--X---
+XXXXX--
+-XX--X-
+---X-XX
+----XX-
+-------
+generation number11
+-------
+X--XX--
+X---X--
+X----XX
+--XX--X
+----XXX
+-------
+generation number12
+-------
+---XX--
+XX-XX--
+-X-XXXX
+---X---
+---XXXX
+-----X-
+generation number13
+-------
+--XXX--
+XX-----
+XX---X-
+-------
+---X-XX
+-----XX
+generation number14
+---X---
+-XXX---
+X--XX--
+XX-----
+----XXX
+----XXX
+----XXX
+generation number15
+---X---
+-X-----
+X--XX--
+XX-X---
+----X-X
+---X---
+----X-X
+generation number16
+-------
+--XXX--
+X--XX--
+XXXX-X-
+--XXX--
+---XX--
+-------
+generation number17
+---X---
+--X-X--
+X----X-
+X----X-
+-----X-
+--X-X--
+-------
+generation number18
+---X---
+---XX--
+-X--XX-
+----XXX
+----XX-
+-------
+-------
+generation number19
+---XX--
+--XX-X-
+------X
+---X--X
+----X-X
+-------
+-------
+generation number20
+--XXX--
+--XX-X-
+--XXXXX
+------X
+-----X-
+-------
+-------
+generation number21
+--X-X--
+-X----X
+--X---X
+---X--X
+-------
+-------
+-------
+generation number22
+-------
+-XXX-X-
+--X--XX
+-------
+-------
+-------
+-------
+generation number23
+--X----
+-XXXXXX
+-XXXXXX
+-------
+-------
+-------
+-------
+generation number24
+-XX-XX-
+------X
+-X----X
+--XXXX-
+-------
+-------
+-------
+generation number25
+-----X-
+-XX---X
+--XXX-X
+--XXXX-
+---XX--
+-------
+-------
+generation number26
+-------
+-XX-X-X
+------X
+-------
+--X--X-
+-------
+-------
+generation number27
+-------
+-----X-
+-----X-
+-------
+-------
+-------
+-------
+generation number28
+-------
+-------
+-------
+-------
+-------
+-------
+-------

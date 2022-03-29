@@ -1,272 +1,414 @@
 #include "GameMode.h"
 
 GameMode::GameMode() {
-  boardArray = new char*[height];
+
+}
+
+void GameMode::setGameMode(char g) {
+    gameMode = g;
+}
+
+int GameMode::getGenerationNum(){
+    return generationNum;
+}
+
+void GameMode::setHeight(int h){
+    height = h;
+}
+void GameMode::setWidth(int w){
+    width = w;
+}
+
+void GameMode::generateRandomArray(int h, int w, float p){
+    boardArray = new char*[height];
+    oldboardArray = new char*[height];
     for(int i = 0; i < height; i++){
         boardArray[i] = new char[width];
+        oldboardArray[i] = new char[width];
+    }
+    generationNum = 0;
+    height = h;
+    width = w;
+
+    //set threshold for comparing to isAlive here using p
+    int threshold = p * 100; //turn to percentage so that we can easily use ints from rand()
+
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            int isAlive = rand() % 100 + 1; //rand() % 100 = 0-99, add 1 to get desired 1-100 range
+            if(isAlive <= threshold){ //under threshold means alive
+                boardArray[i][j] = 'X';
+            }
+            else{
+                boardArray[i][j] = '-';
+            }
+        }
     }
 }
 
-//p assumed to be between 0 and 1, for a percentage displayed as decimal
-void GameMode::generateRandomArray(int h, int w, float p)
-{
-  height = h;
-  width = w;
-
-  //set threshold for comparing to isAlive here using p
-  int threshold = p * 100; //turn to percentage so that we can easily use ints from rand()
-
-  for(int i = 0; i < height; i++){
-    for(int j = 0; j < width; j++){
-      int isAlive = rand() % 100 + 1; //rand() % 100 = 0-99, add 1 to get desired 1-100 range
-      if(isAlive <= threshold){ //under threshold means alive
-        boardArray[i][j] = 'X';
-      }
-      else{
-        boardArray[i][j] = '-';
-      }
-    }
-  }
-
-}
-
-GameMode::~GameMode() {
-
-}
+GameMode::~GameMode() {}
 
 int GameMode::getNeighborCountClassic(int row, int col){
-
-  int count;
-
-  //if in boundary of array for row - 1, col unchanged
-    //if array at new coords == 'X'
-      //then neighbor count++
-  //if in boundary of array for row + 1, col unchanged
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //if in boundary of array for row unchanged, col - 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //if in boundary of array for row unchanged, col + 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-
-  //if in boundary of array for row -1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //if in boundary of array for row -1, col +1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //if in boundary of array for row + 1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //if in boundary of array for row + 1, col + 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-
-
+  int count = 0;
+  //CHECK ABOVE ~ current Cell
+  if(row - 1 >= 0) { //if current cell has an above cell within bounds
+    if(boardArray[row - 1][col] == 'X'){//then if there is an X at the above position, add to count
+      ++count;
+    }
+  }
+  //CHECK BELOW ~ current cell
+  if(row + 1 < height) { //if current cell has a below cell within bounds
+    if(boardArray[row + 1][col] == 'X'){//then if there is an X at the below position, add to count
+      ++count;
+    }
+  }
+  //CHECK LEFT ~ of current cell
+  if(col - 1 >= 0) {//if the current cell has a cell to the left of it within bounds
+    if(boardArray[row][col - 1 ] == 'X'){//then if there is an X at the left position, add to count
+      ++count;
+    }
+  }
+  //CHECK RIGHT ~ of current cell
+  if(col + 1 < width) {//if the current cell has a cell to the right of it within bounds
+    if(boardArray[row][col + 1] == 'X'){//then if there is an X at the right position, add to count
+      ++count;
+    }
+  }
+  //CHECK TOP LEFT ~ of current cell
+  if(row - 1 >= 0 && col - 1 >= 0) {//if the current cell has a cell to the left top diagonally from it in bounds
+    if(boardArray[row - 1][col - 1] == 'X'){//then if there is an X at the top left diagonal, add to count
+      ++count;
+    }
+  }
+  //CHECK TOP RIGHT ~ of current cell
+  if(row - 1 >= 0 && col + 1 < width) {//if the current cell has a cell to the right top diagonally from it in bounds
+    if(boardArray[row - 1][col + 1] == 'X'){//then if there is an X at the top right diagonal, add to count
+      ++count;
+    }
+  }
+  //CHECK BOTTOM LEFT ~ of current cell
+  if(row + 1 < height && col - 1 >= 0) {//if the current cell has a cell to the left bottom diagonally from it in bounds
+    if(boardArray[row + 1][col - 1] == 'X'){//then if there is an X at the bottom left diagonal, add to count
+      ++count;
+    }
+  }
+  //CHECK TOP RIGHT ~ of current cell
+  if(row + 1 < height && col + 1 < width) {//if the current cell has a cell to the right bottom diagonally form it in bounds
+    if(boardArray[row + 1][col + 1] == 'X'){//then if there is an X at the bottom right diagonal, add to count
+      ++count;
+    }
+  }
   return count;
 }
 
+
 int GameMode::getNeighborCountDoughnut(int row, int col){
-
   int count = 0;
-
-  //CHECK ABOVE
-  //if in boundary of array for row - 1, col unchanged
-  if(row - 1 >= 0) {
-    //if array at new coords == 'X'
-    if(boardArray[row - 1][col] == 'X'){
-      //then neighbor count++
+  //CHECK ABOVE ~ current cell
+  if(row - 1 >= 0) {//if there exist a cell above current cell within bounds
+    if(boardArray[row - 1][col] == 'X'){//if cell is occupied, add to count
       count++;
     }
   }
-  //else WRAP AROUND BOTTOM
-  else{ //over border
-    //array at height - 1, col unchanged == 'X'
-    if(boardArray[height - 1][col] == 'X'){
-      //then neighbor count ++
-      count++;
-    }
-
-  //CHECK BELOW
-  if(row + 1 <= height) {
-    //if array at new coords == 'X'
-    if(boardArray[row + 1][col] == 'X'){
-      //then neighbor count++
+  //else check WRAP AROUND BOTTOM
+  else{//above is out of bounds
+    if(boardArray[height - 1][col] == 'X'){//check wrap around bottom in same column, if occupied, add to count
       count++;
     }
   }
-  //else WRAP AROUND TOP
-  else{ //over border
-    //array at height - 1, col unchanged == 'X'
-    if(boardArray[0][col] == 'X'){
-      //then neighbor count ++
+  //CHECK BELOW ~ current cell
+  if(row + 1 < height) {
+    if(boardArray[row + 1][col] == 'X'){//if there exist a cell below current cell within bounds
+      count++;//if cell is occupied, add to count
+    }
+  }
+  //else check WRAP AROUND TOP
+  else{
+    if(boardArray[0][col] == 'X'){//check wrap around top row in same column, if occupied, add to count
       count++;
     }
   }
-    //CHECK LEFT
-    if(col - 1 >= 0) {
-    //if array at new coords == 'X'
-    if(boardArray[row][col - 1 ] == 'X'){
-      //then neighbor count++
+  //CHECK LEFT ~ of current cell
+  if(col - 1 >= 0) {//if there exist a cell to the left of current cell within bounds
+    if(boardArray[row][col - 1 ] == 'X'){//if cell is occupied, add to count
       count++;
     }
   }
-  //else WRAP AROUND TO THE RIGHT SIDE
-  else{ //over border
-    //array at height - 1, col unchanged == 'X'
-    if(boardArray[row][length - 1] == 'X'){
-      //then neighbor count ++
-      count++;
-    }
-    //CHECK RIGHT
-  if(col + 1 <= length) {
-    //if array at new coords == 'X'
-    if(boardArray[row][col + 1] == 'X'){
-      //then neighbor count++
+  //else check WRAP AROUND TO THE RIGHT SIDE
+  else{
+    if(boardArray[row][width - 1] == 'X'){//check wrap around right, if occupied, add to count
       count++;
     }
   }
-  //else WRAP AROUND TO THE LEFT
-  else{ //over border
-    //array at height - 1, col unchanged == 'X'
-    if(boardArray[row][0] == 'X'){
-      //then neighbor count ++
+  //CHECK RIGHT ~ of current cell
+  if(col + 1 < width) {//if there exist a cell to the right of current cell within bounds
+    if(boardArray[row][col + 1] == 'X'){//if cell is occupied, add to count
       count++;
     }
   }
-
-
-  ////////////////////// DIAGONALS ////////////////////////////////
-  //if in boundary of array for row -1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at height, width == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row -1, col +1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at height, 0 == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at 0, width == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col + 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at 0, 0 == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-
-
+  //else check WRAP AROUND TO THE LEFT
+  else{
+    if(boardArray[row][0] == 'X'){//check wrap around right, if occupied, add to count
+      count++;
+    }
+  }
+  //CHECK ABOVE LEFT ~ of current cell
+  if(row - 1 >= 0 && col - 1 >= 0) {//if there exist a cell to the top left of current cell within bounds
+    if(boardArray[row - 1][col - 1] == 'X'){//if cell is occupied, add to count
+      count++;
+    }
+  }
+  //ChECK ONLY FIRST COLUMN, IGNORE TOP ROW
+  else if(row > 0){
+    if(boardArray[row - 1][width - 1] == 'X'){//if there exist an occupied cell on wrap around (last column, row above), add to count
+      count++;
+    }
+  }
+  //CHECK ONLY TOP ROW, IGNORE FIRST COLUMN
+  else if(col > 0){
+    if(boardArray[height - 1][col - 1] == 'X'){//if there exist an occupied cell on wrap around (last row, left one column), add to count
+      count++;
+    }
+  }
+  //CHECK TOP LEFT CORNER
+  else{
+    if(boardArray[height - 1][width - 1] == 'X'){//if there exist an occupied cell on wrap (bottom left corner of grid), add to count
+      count++;
+    }
+  }
+  //CHECK ABOVE RIGHT ~ of current cell
+  if(row - 1 >= 0 && col + 1 < width) {//if there exist a cell to the top right of current cell within bounds
+    if(boardArray[row - 1][col + 1] == 'X'){//if cell is occupied, add to count
+      count++;
+    }
+  }
+  //CHECK ONLY TOP ROW, IGNORE LAST COLUMN
+  else if(col < (width - 1)){
+    if(boardArray[height - 1][col + 1] == 'X'){//if there exist an occupied cell on wrap (last row, right one column), add to count
+      count++;
+    }
+  }
+  //CHECK ONLY LAST COLUMN, IGNORE FIRST ROW
+  else if(row > 0){
+    if(boardArray[row - 1][0] == 'X'){//if there exist an ocupied cell on wrap (first column, ), add to count
+      count++;
+    }
+  }
+  //CHECK TOP RIGHT CORNER
+  else{
+    if(boardArray[height - 1][0] == 'X'){//if there exist an occupied cell on bottom left corner of board, add to count
+      count++;
+    }
+  }
+  //CHECK BELOW LEFT ~ of current cell
+  if(row + 1 < height && col - 1 >= 0) {//if there exist a cell to the bottom left of current cell within bounds
+    if(boardArray[row + 1][col - 1] == 'X'){//if cell is occupied, add to count
+      count++;
+    }
+  }
+  //CHECK ONLY LAST ROW, IGNORE FIRST COLUMN
+  else if(col > 0) {
+    if(boardArray[0][col - 1] == 'X'){//if there exist an occupied cell on wrap (first row, to the left one column), add to count
+      count++;
+    }
+  }
+  //CHECK ONLY FIRST COLUMN, IGNORE LAST ROW
+  else if(row < (height - 1)){
+    if(boardArray[row + 1][width - 1] == 'X'){//if there exist an occupied cell on wrap (down one row, last column), add to count
+      count++;
+    }
+  }
+  //CHECK BOTTOM LEFT CORNER
+  else{
+    if(boardArray[0][width - 1] == 'X'){//if there exist an occupied cell on top right corner of grid, add to count
+      count++;
+    }
+  }
+  //CHECK BELOW RIGHT ~ of current cell
+  if(row + 1 < height && col + 1 < width) {//if there exist a cell to the bottom right of current cell within bounds
+    if(boardArray[row + 1][col + 1] == 'X'){//if cell is occupied, add to count
+      count++;
+    }
+  }
+  //CHECK ONLY LAST ROW, IGNORE LAST COLUMN
+  else if(col < (width - 1)){
+    if(boardArray[0][col + 1] == 'X'){//if there exist an occupied cell on wrap (first row, over one column), add to count
+      count++;
+    }
+  }
+  //CHECK ONLY LAST COLUMN, IGNORE LAST ROW
+  else if(row < (height - 1)){
+    if(boardArray[row + 1][0] == 'X'){//if there exist an occupied cell on wrap (above one row, first column), add to count
+      count++;
+    }
+  }
+  //CHECK BOTTOM RIGHT CORNER
+  else{
+    if(boardArray[0][0] == 'X'){//if there exist an occupied cell on top right corner, add to count
+      count++;
+    }
+  }
   return count;
+}
+
+void GameMode::clearOutFile(string outfilename){
+  f1.clearFile(outfilename);
 }
 
 int GameMode::getNeighborCountMirror(int row, int col){
-
-  int count;
-
-  //if in boundary of array for row - 1, col unchanged
-    //if array at new coords == 'X'
-      //then neighbor count++
-  //else
-    //array at row, col unchanged == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col unchanged
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row, col unchanged == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row unchanged, col - 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row, col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row unchanged, col + 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row, col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-
-  ////////////////////// DIAGONALS ////////////////////////////////
-  //if in boundary of array for row -1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row,col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row -1, col +1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row,col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col -1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row,col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-  //if in boundary of array for row + 1, col + 1
-    //if array at new coords == 'X'
-        //then neighbor count++
-  //else
-    //array at row,col == 'X'
-      //then neighbor count ++
-  //-------------------------------------------------------------------
-
-
+  int count = 0;
+  //CHECK ABOVE ~ current cell
+  if(row - 1 >= 0){ //if current cell has a cell above it within bounds
+    if(boardArray[row - 1][col] == 'X'){//then if the cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK ABOVE REFLECTION
+  else{
+    if(boardArray[row][col] == 'X'){//Above is out of bounds then check if current cell is occupied, add to count
+        ++count;
+    }
+  }
+  //CHECK BELOW ~ current cell
+  if(row + 1 < height){ //if current cell has a cell below it within bounds
+    if(boardArray[row + 1][col] == 'X'){//then if cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK BELOW REFLECTION
+  else{
+    if(boardArray[row][col] == 'X'){//Below is out of bounds then check if current cell is occupied, add to count
+      ++count;
+    }
+  }
+  //CHECK LEFT ~ of current cell
+  if(col - 1 >= 0){//if a current cell has a cell to the left of it within bounds
+    if(boardArray[row][col - 1] == 'X'){//then check if cell is occuped, add to count
+      ++count;
+    }
+  }
+  //else CHECK LEFT REFLECTION
+  else{
+    if(boardArray[row][col] == 'X'){//Left is out of bounds, then check if current cell is occupied, add to count
+      ++count;
+      }
+    }
+  //CHECK RIGHT ~ of current cell
+  if(col + 1 < width){//if a current cell has a cell to the right if it eithin bounds
+    if(boardArray[row][col + 1] == 'X'){//then check if cell is occupied, add to count
+      ++count;
+      }
+    }
+  //else CHECK RIGHT REFLECTION
+  else{
+    if(boardArray[row][col] == 'X'){//Right is out of bounds, then check if current cell is occupied, add to count
+      ++count;
+    }
+  }
+  //CHECK ABOVE LEFT ~ of current cell
+  if(row - 1 >= 0 && col - 1 >= 0){//if a current cell has a cell to the top left of it within bounds
+    if(boardArray[row - 1][col - 1] == 'X'){//then check if cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK ABOVE LEFT REFLECTION
+  else{
+    if(row == 0 && col != 0 && boardArray[row][col - 1] == 'X'){//if current cell is located on top boarder, not left corner and left neighbor is occupied, add to count
+      ++count;
+    }
+    if(col == 0 && row != 0 && boardArray[row - 1][col] == 'X'){//if current cell is located on left boarder, not top corner and is occupied, add to count
+      ++count;
+    }
+    if(col == 0 && row == 0 && boardArray[row][col] == 'X'){//if current cell is located on left corner, and is occupied, add to count
+      ++count;
+    }
+  }
+  //CHECK ABOVE RIGHT ~ of current cell
+  if(row - 1 >= 0 && col + 1 < width) {//if current cell has a cell to the top right of it within bounds
+    if(boardArray[row - 1][col + 1] == 'X'){//then check if cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK ABOVE RIGHT REFLECTION
+  else{
+    if(col != (width - 1) && row == 0 && boardArray[row][col + 1] == 'X'){//if current cell is located on top boarder, not right corner, and right neightbor is occupied, add to count
+      ++count;
+    }
+    if(col == (width - 1) && row != 0 && boardArray[row - 1][col] == 'X'){//if current cell is located on last column, not top corner, and above neightboor is occupied, add to count
+      ++count;
+    }
+    if(col == (width - 1) && row == 0 && boardArray[row][col] == 'X'){//if current cell is located on last column, not top corner, and above neightboor is occupied, add to count
+      ++count;
+    }
+  }
+  //CHECK BOTTOM LEFT ~ of current cell
+  if(row + 1 < height && col - 1 >= 0){//if current cell has a cell to the bottom left of it within bounds
+    if(boardArray[row + 1][col - 1] == 'X'){//then check if cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK BOTTOM LEFT REFLECTION
+  else{
+    if(row == (height - 1) && col != 0 && boardArray[row][col - 1] == 'X'){//if current cell is located on bottom boarder, not left corner, and left neightbor is occupied, add to count
+      ++count;
+    }
+    if(col == 0 && row != (height - 1) && boardArray[row + 1][col] == 'X'){//if current cell is located on left boarder, not bottom corner, and bottom neighbor is occupied, add to count
+      ++count;
+    }
+    if(col == 0 && row == (height - 1) && boardArray[row][col] == 'X'){//if current cell is located on left boarder, not bottom corner, and bottom neighbor is occupied, add to count
+      ++count;
+    }
+  }
+  //CHECK BOTTOM RIGHT ~ of current cell
+  if(row + 1 < height && col + 1 < width){//if current cell has a cell to the bottom right of it within bounds
+    if(boardArray[row + 1][col + 1] == 'X'){//then check if cell is occupied, add to count
+      ++count;
+    }
+  }
+  //else CHECK BOTTOM RIGHT REFLECTION
+  else{
+    if(col != (width - 1) && row == (height - 1) && boardArray[row][col + 1] == 'X'){//if current cell is located on last row, not right corner, and right neighbor is occupied, add to count
+      ++count;
+    }
+    if(col == (width - 1) && row != (height - 1) && boardArray[row + 1][col] == 'X'){//if current cell is located on last column, not bottom corner, and bottom neighbor is occupied, add to count
+      ++count;
+    }
+    if(col == (width - 1) && row == (height - 1) && boardArray[row][col] == 'X'){//if current cell is located on last column, not bottom corner, and bottom neighbor is occupied, add to count
+      ++count;
+    }
+  }
   return count;
+  cout << count << "\n";
 }
 
 void GameMode::doBoardRound(){
-
   char** nextBoard = new char*[height];
   for(int i = 0; i < height; i++){
-    boardArray[i] = new char[width];
+    nextBoard[i] = new char[width];
   }
-
   for(int i = 0; i < height; i++){
     for(int j = 0; j < width; j++){
       nextBoard[i][j] = boardArray[i][j];
+      oldboardArray[i][j] = boardArray[i][j];
     }
   }
-
   for(int row = 0; row < height; row++){
     for(int col = 0; col < width; col++){
       int neighbors;
-      if(gameMode.compare("classic") == 0){
+      if(gameMode == 'c'){
         neighbors = getNeighborCountClassic(row, col);
       }
-      else if(gameMode.compare("doughnut") == 0){
+      else if(gameMode == 'd'){
         neighbors = getNeighborCountDoughnut(row, col);
       }
-      else if(gameMode.compare("mirror") == 0){
+      else if(gameMode == 'm'){
         neighbors = getNeighborCountMirror(row, col);
       }
-
       if(neighbors <= 1){
         nextBoard[row][col] = '-';
+      }
+      else if(neighbors == 2){
+        nextBoard[row][col] = oldboardArray[row][col];
       }
       else if(neighbors == 3){
         nextBoard[row][col] = 'X';
@@ -276,11 +418,71 @@ void GameMode::doBoardRound(){
       }
     }
   }
-
   for(int i = 0; i < height; i++){
     for(int j = 0; j < width; j++){
       boardArray[i][j] = nextBoard[i][j];
     }
   }
+  ++generationNum;
+}
 
+void GameMode::printArray(){
+    string ret;
+    ret = "";
+    for(int i = 0; i < height; ++i ){
+        for(int j = 0; j < width; ++j){
+            ret += boardArray[i][j];
+        }
+        ret += "\n";
+    }
+    cout << ret << endl;
+}
+
+void GameMode::printArrayToFile(string filename){
+    f1.printToFile(boardArray,height,width,generationNum,filename);
+}
+
+void GameMode::generateFileArray(string filename){
+    boardArray = new char*[height];
+    oldboardArray = new char*[height];
+    for(int i = 0; i < height; i++){
+        boardArray[i] = new char[width];
+        oldboardArray[i] = new char[width];
+    }
+    generationNum = 0;
+
+    string arrString = f1.processFile(filename);
+    height = arrString[0] - '0';
+    width = arrString[1] - '0';
+    int s = 2;
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            boardArray[i][j] = arrString[s];
+            ++s;
+        }
+    }
+}
+
+bool GameMode::isEmpty(){
+    for(int i = 0; i < height; ++i ){
+        for(int j = 0; j < width; ++j){
+            if(boardArray[i][j] == 'X'){
+                return false;
+                break;
+            }
+        }
+    }
+    return true;
+}
+
+bool GameMode::isBalanced(){
+  for(int i = 0; i < height; ++i ){
+      for(int j = 0; j < width; ++j){
+          if(oldboardArray[i][j] != boardArray[i][j]){
+              return false;
+              break;
+          }
+      }
+  }
+  return true;
 }
