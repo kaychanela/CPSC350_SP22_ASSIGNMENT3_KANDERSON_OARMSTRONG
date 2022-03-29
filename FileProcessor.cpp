@@ -35,7 +35,7 @@ void FileProcessor::printToFile(char** arr,int height, int width, int gennum, st
   int w = width;
   outputfile.open(filename + ".txt", ios_base::app);
   if(outputfile.is_open()){
-    outputfile << "generation number" << gennum << endl;
+    outputfile << "generation number " << gennum << endl;
     for(int i = 0; i < h; ++ i){
       for(int j = 0; j < w; ++j){
         outputfile << arr[i][j];
