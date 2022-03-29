@@ -3,7 +3,7 @@
 FileProcessor::FileProcessor(){}
 FileProcessor::~FileProcessor(){}
 
-
+//function reads from a user given file and returns content via string
 string FileProcessor::processFile(string input){
   ifstream importfile;
   string ret;
@@ -20,6 +20,7 @@ string FileProcessor::processFile(string input){
   return ret;
 }
 
+//function that clears out file of previous data
 void FileProcessor::clearFile(string filename){
   ofstream outputfile;
   outputfile.open(filename + ".txt");
@@ -29,6 +30,7 @@ void FileProcessor::clearFile(string filename){
   outputfile.close();
 }
 
+//function that writes boardArray into a file alonf with current generation stats
 void FileProcessor::printToFile(char** arr,int height, int width, int gennum, string filename){
   ofstream outputfile;
   int h = height;

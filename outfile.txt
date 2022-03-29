@@ -7,6 +7,14 @@ X--X---
 X--X--X
 X-----X
 generation number 1
+X---X--
+---X---
+X--X-X-
+X--X---
+----X--
+X--X--X
+X-----X
+generation number 2
 -------
 ---X---
 --XX---
@@ -14,7 +22,7 @@ generation number 1
 ---XX--
 -----X-
 -------
-generation number 2
+generation number 3
 -------
 --XX---
 --XXX--
@@ -22,7 +30,7 @@ generation number 2
 ---XX--
 ----X--
 -------
-generation number 3
+generation number 4
 -------
 --X-X--
 --X-X--
@@ -30,7 +38,7 @@ generation number 3
 ---XX--
 ---XX--
 -------
-generation number 4
+generation number 5
 -------
 -------
 -XX----
@@ -38,7 +46,7 @@ generation number 4
 --X-X--
 ---XX--
 -------
-generation number 5
+generation number 6
 -------
 -------
 -XXX---
@@ -46,7 +54,7 @@ generation number 5
 --X-XX-
 ---XX--
 -------
-generation number 6
+generation number 7
 -------
 --X----
 -XXX---
@@ -54,7 +62,7 @@ generation number 6
 --X-XX-
 ---XXX-
 -------
-generation number 7
+generation number 8
 -------
 -XXX---
 -XXX---
@@ -62,7 +70,7 @@ generation number 7
 -------
 ---X-X-
 ----X--
-generation number 8
+generation number 9
 --X----
 -X-X---
 X------
@@ -70,7 +78,7 @@ X------
 -----X-
 ----X--
 ----X--
-generation number 9
+generation number 10
 --X----
 -XX----
 XX-XX--
@@ -78,7 +86,7 @@ XX-XX--
 ---X-X-
 ----XX-
 -------
-generation number 10
+generation number 11
 -XX----
 X------
 XX-XX--
@@ -86,7 +94,7 @@ XX-XX--
 ---X-X-
 ----XX-
 -------
-generation number 11
+generation number 12
 -X-----
 X--X---
 XXXXX--
@@ -94,7 +102,7 @@ XXXXX--
 ---X-XX
 ----XX-
 -------
-generation number 12
+generation number 13
 -------
 X--XX--
 X---X--
@@ -102,7 +110,7 @@ X----XX
 --XX--X
 ----XXX
 -------
-generation number 13
+generation number 14
 -------
 ---XX--
 XX-XX--
@@ -110,7 +118,7 @@ XX-XX--
 ---X---
 ---XXXX
 -----X-
-generation number 14
+generation number 15
 -------
 --XXX--
 XX-----
@@ -118,7 +126,7 @@ XX---X-
 -------
 ---X-XX
 -----XX
-generation number 15
+generation number 16
 ---X---
 -XXX---
 X--XX--
@@ -126,7 +134,7 @@ XX-----
 ----XXX
 ----XXX
 ----XXX
-generation number 16
+generation number 17
 ---X---
 -X-----
 X--XX--
@@ -134,7 +142,7 @@ XX-X---
 ----X-X
 ---X---
 ----X-X
-generation number 17
+generation number 18
 -------
 --XXX--
 X--XX--
@@ -142,7 +150,7 @@ XXXX-X-
 --XXX--
 ---XX--
 -------
-generation number 18
+generation number 19
 ---X---
 --X-X--
 X----X-
@@ -150,7 +158,7 @@ X----X-
 -----X-
 --X-X--
 -------
-generation number 19
+generation number 20
 ---X---
 ---XX--
 -X--XX-
@@ -158,7 +166,7 @@ generation number 19
 ----XX-
 -------
 -------
-generation number 20
+generation number 21
 ---XX--
 --XX-X-
 ------X
@@ -166,7 +174,7 @@ generation number 20
 ----X-X
 -------
 -------
-generation number 21
+generation number 22
 --XXX--
 --XX-X-
 --XXXXX
@@ -174,7 +182,7 @@ generation number 21
 -----X-
 -------
 -------
-generation number 22
+generation number 23
 --X-X--
 -X----X
 --X---X
@@ -182,7 +190,7 @@ generation number 22
 -------
 -------
 -------
-generation number 23
+generation number 24
 -------
 -XXX-X-
 --X--XX
@@ -190,7 +198,7 @@ generation number 23
 -------
 -------
 -------
-generation number 24
+generation number 25
 --X----
 -XXXXXX
 -XXXXXX
@@ -198,7 +206,7 @@ generation number 24
 -------
 -------
 -------
-generation number 25
+generation number 26
 -XX-XX-
 ------X
 -X----X
@@ -206,7 +214,7 @@ generation number 25
 -------
 -------
 -------
-generation number 26
+generation number 27
 -----X-
 -XX---X
 --XXX-X
@@ -214,7 +222,7 @@ generation number 26
 ---XX--
 -------
 -------
-generation number 27
+generation number 28
 -------
 -XX-X-X
 ------X
@@ -222,18 +230,10 @@ generation number 27
 --X--X-
 -------
 -------
-generation number 28
--------
------X-
------X-
--------
--------
--------
--------
 generation number 29
 -------
--------
--------
+-----X-
+-----X-
 -------
 -------
 -------

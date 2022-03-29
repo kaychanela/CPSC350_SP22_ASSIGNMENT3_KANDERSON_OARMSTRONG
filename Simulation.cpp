@@ -92,25 +92,32 @@ void Simulation::startGame(){
   getGameMode();
   setBriefPause();
   if(briefPause){
-    cout << "0" << endl;
+    cout << "\n" << "0" << endl;
+    g1.printArray();
+    cout << "generation number " << to_string(g1.getGenerationNum()) << endl;
     g1.printArray();
   }
   else{
     g1.clearOutFile(outfilename);
     g1.printArrayToFile(outfilename);
+    g1.printArrayToFile(outfilename);
   }
   while(!g1.isEmpty() && !g1.isBalanced()){//print first then second, if second is equal to first end
     if(briefPause){
-      g1.doBoardRound();
-      cout << "generation number " << to_string(g1.getGenerationNum()) << endl;
-      g1.printArray();
-      cout << "Generation " << g1.getGenerationNum() << " complete, press Enter to continue" << endl;
+      cout << "Press Enter to Continue..." << "\n" << endl;
       cin.clear();
       cin.ignore();
+      g1.doBoardRound();
+      if(!g1.isBalanced() && !g1.isEmpty()){
+        cout << "generation number " << to_string(g1.getGenerationNum()) << endl;
+        g1.printArray();
+      }
     }
     else{
       g1.doBoardRound();
-      g1.printArrayToFile(outfilename); //want to create a method that clears filename before starting, outside of for loop
+      if(!g1.isBalanced() && !g1.isEmpty()){
+        g1.printArrayToFile(outfilename);
+      }
     }
   }
   cout << "Simulation over, press Enter to exit." << endl;

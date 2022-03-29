@@ -1,31 +1,37 @@
 #include "GameMode.h"
 
-GameMode::GameMode() {
+GameMode::GameMode(){}
 
-}
-
+//method to update gamemode variable to desired char
 void GameMode::setGameMode(char g) {
     gameMode = g;
 }
 
+//method that returns current generation number
 int GameMode::getGenerationNum(){
     return generationNum;
 }
 
+//method to set height variable taking in int value
 void GameMode::setHeight(int h){
     height = h;
 }
+
+//method to set width variable taking in int value
 void GameMode::setWidth(int w){
     width = w;
 }
 
+//method to generate a random array based on user inputed integer values for height and width, plus float value representing population density
 void GameMode::generateRandomArray(int h, int w, float p){
+    //initialize empty board array and old board array
     boardArray = new char*[height];
     oldboardArray = new char*[height];
     for(int i = 0; i < height; i++){
         boardArray[i] = new char[width];
         oldboardArray[i] = new char[width];
     }
+    //initialize generation number to 0, set height equal to user input
     generationNum = 0;
     height = h;
     width = w;
@@ -33,6 +39,7 @@ void GameMode::generateRandomArray(int h, int w, float p){
     //set threshold for comparing to isAlive here using p
     int threshold = p * 100; //turn to percentage so that we can easily use ints from rand()
 
+    //populate boardArray based on density value
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             int isAlive = rand() % 100 + 1; //rand() % 100 = 0-99, add 1 to get desired 1-100 range
@@ -48,6 +55,7 @@ void GameMode::generateRandomArray(int h, int w, float p){
 
 GameMode::~GameMode() {}
 
+//method that takes current cell in boardArray and returns that cells neighbor count ~ classic version
 int GameMode::getNeighborCountClassic(int row, int col){
   int count = 0;
   //CHECK ABOVE ~ current Cell
@@ -101,7 +109,7 @@ int GameMode::getNeighborCountClassic(int row, int col){
   return count;
 }
 
-
+//method that takes current cell in boardArray and returns that cells neighbor count ~ doughnut version
 int GameMode::getNeighborCountDoughnut(int row, int col){
   int count = 0;
   //CHECK ABOVE ~ current cell
@@ -251,10 +259,7 @@ int GameMode::getNeighborCountDoughnut(int row, int col){
   return count;
 }
 
-void GameMode::clearOutFile(string outfilename){
-  f1.clearFile(outfilename);
-}
-
+//method that takes current cell in boardArray and returns that cells neighbor count ~ mirror version
 int GameMode::getNeighborCountMirror(int row, int col){
   int count = 0;
   //CHECK ABOVE ~ current cell
@@ -381,7 +386,15 @@ int GameMode::getNeighborCountMirror(int row, int col){
   cout << count << "\n";
 }
 
+//method that clears out the output file of old data
+void GameMode::clearOutFile(string outfilename){
+  f1.clearFile(outfilename);
+}
+
+//method that iterates through each cell in the boardArray and calls on specific neighbor counter based on user input
+//populates new temp array based on returned neighbor count and replaces boardArray with temp array
 void GameMode::doBoardRound(){
+  //initialize temp arra for changes
   char** nextBoard = new char*[height];
   for(int i = 0; i < height; i++){
     nextBoard[i] = new char[width];
@@ -392,6 +405,7 @@ void GameMode::doBoardRound(){
       oldboardArray[i][j] = boardArray[i][j];
     }
   }
+  //iterate through boardArray and calculate changes based on game mode
   for(int row = 0; row < height; row++){
     for(int col = 0; col < width; col++){
       int neighbors;
@@ -423,9 +437,8 @@ void GameMode::doBoardRound(){
       boardArray[i][j] = nextBoard[i][j];
     }
   }
-  ++generationNum;
 }
-
+//method to print out boardArray to terminal, updates generation count
 void GameMode::printArray(){
     string ret;
     ret = "";
@@ -436,13 +449,18 @@ void GameMode::printArray(){
         ret += "\n";
     }
     cout << ret << endl;
+    ++generationNum;
 }
 
+//method to print our current boardArray to user file, updates generation count
 void GameMode::printArrayToFile(string filename){
     f1.printToFile(boardArray,height,width,generationNum,filename);
+    ++generationNum;
 }
 
+//method that generates an array boardArray based on user given file
 void GameMode::generateFileArray(string filename){
+  //initiallze boardArray and oldboardArray
     boardArray = new char*[height];
     oldboardArray = new char*[height];
     for(int i = 0; i < height; i++){
@@ -451,6 +469,7 @@ void GameMode::generateFileArray(string filename){
     }
     generationNum = 0;
 
+    //process file into a string and break string up into an array
     string arrString = f1.processFile(filename);
     height = arrString[0] - '0';
     width = arrString[1] - '0';
@@ -463,6 +482,7 @@ void GameMode::generateFileArray(string filename){
     }
 }
 
+//function that checks if current generation is emptied of X's
 bool GameMode::isEmpty(){
     for(int i = 0; i < height; ++i ){
         for(int j = 0; j < width; ++j){
@@ -475,6 +495,7 @@ bool GameMode::isEmpty(){
     return true;
 }
 
+//function that compares previos boardArray with current boardArray to check is simulation is balanced
 bool GameMode::isBalanced(){
   for(int i = 0; i < height; ++i ){
       for(int j = 0; j < width; ++j){
